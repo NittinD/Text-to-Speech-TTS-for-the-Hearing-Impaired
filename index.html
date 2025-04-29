@@ -1,0 +1,49 @@
+echo @"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Speech</title>
+</head>
+<body>
+    <h1>Text to Speech Web Portal</h1>
+    
+    <form id="tts-form" method="POST" action="/convert/">
+        <label for="text">Text:</label><br>
+        <textarea name="text" id="text" rows="4" cols="50" required></textarea><br>
+
+        <label for="rate">Rate:</label><br>
+        <input type="number" name="rate" id="rate" value="200" required><br>
+
+        <label for="volume">Volume:</label><br>
+        <input type="number" name="volume" id="volume" value="1" min="0" max="1" step="0.1" required><br>
+
+        <button type="submit">Convert to Speech</button>
+    </form>
+
+    <h2>Download Audio:</h2>
+    <p><a href="/download/output_audio.wav" target="_blank">Download the generated audio</a></p>
+
+    <script>
+        // Handling form submission
+        const form = document.getElementById("tts-form");
+        form.onsubmit = async function (e) {
+            e.preventDefault();
+
+            const data = new FormData(form);
+            const response = await fetch('/convert/', {
+                method: 'POST',
+                body: new URLSearchParams(data)
+            });
+
+            if (response.ok) {
+                alert("Audio generated successfully!");
+            } else {
+                alert("Error generating audio.");
+            }
+        };
+    </script>
+</body>
+</html>
+"@ > C:\Users\HP\Documents\static\index.html
